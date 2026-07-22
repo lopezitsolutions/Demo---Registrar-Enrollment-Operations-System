@@ -21,7 +21,7 @@
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --primary:#7A2048;
@@ -44,6 +44,7 @@
 *{box-sizing:border-box; margin:0; padding:0;}
 body{font-family:'Work Sans', sans-serif; background:var(--bg); color:var(--text); line-height:1.5;}
 h1,h2,h3,h4{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em;}
+.mono{font-family:'JetBrains Mono', monospace;}
 a{color:inherit; text-decoration:none;}
 button{font-family:inherit; cursor:pointer;}
 ul{list-style:none;}
@@ -81,7 +82,7 @@ img,svg{display:block;}
 
 /* ============ ATTRIBUTION BADGE ============ */
 #badge{
-  position:fixed; top:16px; right:16px; z-index:900;
+  position:fixed; bottom:16px; right:16px; z-index:900;
   background:rgba(0,0,0,.55); color:#fff; font-size:11.5px; padding:6px 12px; border-radius:20px;
   display:none;
 }
@@ -246,6 +247,13 @@ footer.pub-footer{background:#241017; color:#D9C3CC; padding:44px 28px 26px;}
 .notif-btn{position:relative; background:var(--bg); border:1px solid var(--border); width:38px; height:38px; border-radius:9px; display:flex; align-items:center; justify-content:center;}
 .notif-btn .icon{width:17px; height:17px; color:var(--primary-dk);}
 .notif-dot{position:absolute; top:7px; right:8px; width:7px; height:7px; border-radius:50%; background:var(--danger);}
+.notif-wrap{position:relative;}
+.notif-dropdown{position:absolute; top:46px; right:0; width:280px; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:0 16px 40px rgba(0,0,0,.18); z-index:300; display:none; overflow:hidden;}
+.notif-dropdown.show{display:block;}
+.notif-dropdown .nd-head{padding:12px 14px; font-size:12.5px; font-weight:700; color:var(--primary-dk); border-bottom:1px solid var(--border);}
+.notif-item{padding:11px 14px; font-size:12.5px; border-bottom:1px solid var(--border); display:flex; gap:9px;}
+.notif-item:last-child{border-bottom:none;}
+.notif-item .nd-time{font-size:10.5px; color:var(--muted); font-family:'JetBrains Mono'; margin-top:2px;}
 .admin-avatar{width:36px; height:36px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Fraunces'; font-size:13px; font-weight:700;}
 
 .admin-body{padding:26px 28px 60px;}
@@ -300,12 +308,47 @@ tr:last-child td{border-bottom:none;}
 .row-btn:hover{border-color:var(--primary); color:var(--primary);}
 .row-btn.primary{background:var(--primary); color:#fff; border-color:var(--primary);}
 
+.progress-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px;}
+.progress-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px;}
+.progress-card .pc-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:13px; font-weight:600;}
+.progress-card .pc-pct{font-family:'JetBrains Mono'; font-size:12px; color:var(--primary);}
+.progress-bar{height:7px; background:var(--bg); border-radius:20px; overflow:hidden;}
+.progress-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--primary)); border-radius:20px;}
+.snapshot-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px;}
+.snap-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; align-items:center; gap:12px;}
+.snap-dot{width:10px; height:10px; border-radius:50%; flex-shrink:0;}
+.snap-card b{display:block; font-family:'Fraunces'; font-size:19px;}
+.snap-card span{font-size:11.5px; color:var(--muted);}
+
+.quick-actions{display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;}
+.qa-btn{background:var(--surface); border:1px solid var(--border); border-radius:11px; padding:12px 16px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; color:var(--text);}
+.qa-btn:hover{border-color:var(--primary); color:var(--primary);}
+.qa-btn .qa-icn{width:30px; height:30px; border-radius:8px; background:var(--bg); display:flex; align-items:center; justify-content:center; color:var(--primary); flex-shrink:0;}
+.qa-btn .qa-icn .icon{width:15px; height:15px;}
+
+.mini-stat-row{display:flex; gap:10px; margin-bottom:16px;}
+.mini-stat{flex:1; background:var(--bg); border-radius:10px; padding:12px; text-align:center;}
+.mini-stat b{display:block; font-family:'Fraunces'; font-size:20px; color:var(--primary-dk);}
+.mini-stat span{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.03em;}
+
+.due-list li{display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid var(--border); font-size:13px;}
+.due-list li:last-child{border-bottom:none;}
+.due-list .amt{font-family:'JetBrains Mono'; font-weight:600; color:var(--primary-dk);}
+.due-list .when{font-size:11px; color:var(--muted); margin-top:2px;}
+
 /* now serving */
-.now-serving{background:linear-gradient(135deg,var(--primary-dk),var(--primary)); border-radius:16px; padding:28px; color:#fff; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;}
-.now-serving .label{font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:#E9CBD4; margin-bottom:8px;}
-.now-serving .ticket{font-family:'Fraunces'; font-size:44px;}
+.now-serving{background:linear-gradient(135deg,var(--primary-dk),var(--primary)); border-radius:16px; padding:28px; color:#fff; display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; position:relative; overflow:hidden;}
+.now-serving .label{font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:#E9CBD4; margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+.now-serving .ticket{font-family:'JetBrains Mono'; font-weight:600; font-size:44px;}
 .now-serving .sub{font-size:13px; color:#E9CBD4; margin-top:4px;}
 .call-next-btn{background:var(--accent); color:#3d2c07; border:none; padding:14px 26px; border-radius:10px; font-weight:700; font-size:14px; display:flex; align-items:center; gap:8px;}
+.live-dot{width:8px; height:8px; border-radius:50%; background:#7CE0A6; box-shadow:0 0 0 0 rgba(124,224,166,.6); animation:livePulse 1.8s infinite;}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(124,224,166,.55);} 70%{box-shadow:0 0 0 8px rgba(124,224,166,0);} 100%{box-shadow:0 0 0 0 rgba(124,224,166,0);}}
+.queue-ticker{background:rgba(255,255,255,.1); border-top:1px solid rgba(255,255,255,.15); margin:22px -28px -28px; padding:12px 28px; overflow:hidden; white-space:nowrap; position:relative;}
+.ticker-track{display:inline-flex; gap:36px; animation:tickerScroll 16s linear infinite;}
+.ticker-track span{font-family:'JetBrains Mono'; font-size:12px; color:#F3DEE5; display:inline-flex; align-items:center; gap:8px;}
+@keyframes tickerScroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+@media (prefers-reduced-motion: reduce){.live-dot, .ticker-track{animation:none;}}
 
 /* modal */
 .modal-overlay{position:fixed; inset:0; background:rgba(42,33,29,.55); z-index:1200; display:none; align-items:center; justify-content:center; padding:20px;}
@@ -684,6 +727,10 @@ tr:last-child td{border-bottom:none;}
       Payments
     </a>
     <div class="side-group">System</div>
+    <a class="side-link" data-page="users" onclick="goPage('users', this)">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="18" cy="8" r="2.5"/><path d="M16.5 14.2c2.2.3 4 2.3 4 4.8"/></svg>
+      Users
+    </a>
     <a class="side-link" data-page="settings" onclick="goPage('settings', this)">
       <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.2a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.2a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.6 1H21a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.6 1Z"/></svg>
       Settings
@@ -697,8 +744,16 @@ tr:last-child td{border-bottom:none;}
         <div id="page-title">Dashboard</div>
       </div>
       <div class="topbar-right">
-        <div class="search-box"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" placeholder="Search students, tickets..."></div>
-        <button class="notif-btn"><svg class="icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg><span class="notif-dot"></span></button>
+        <div class="search-box"><svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input type="text" id="admin-search" placeholder="Search students, tickets..." oninput="liveSearch(this.value)"></div>
+        <div class="notif-wrap">
+          <button class="notif-btn" onclick="toggleNotif()"><svg class="icon" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg><span class="notif-dot" id="notif-dot"></span></button>
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="nd-head">Notifications</div>
+            <div class="notif-item"><div>Ticket <b>A-019</b> waiting over 15 minutes<div class="nd-time">2 min ago</div></div></div>
+            <div class="notif-item"><div>3 documents still pending for <b>Sample Student 5</b><div class="nd-time">18 min ago</div></div></div>
+            <div class="notif-item"><div>Payment overdue — <b>Sample Student 4</b><div class="nd-time">1 hr ago</div></div></div>
+          </div>
+        </div>
         <div class="admin-avatar">RA</div>
       </div>
     </div>
@@ -707,6 +762,11 @@ tr:last-child td{border-bottom:none;}
 
       <!-- DASHBOARD -->
       <div class="page active" id="page-dashboard">
+        <div class="quick-actions">
+          <button class="qa-btn" onclick="goPageByName('queue')"><span class="qa-icn"><svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span> Call Next Ticket</button>
+          <button class="qa-btn" onclick="goPageByName('documents')"><span class="qa-icn"><svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"/><path d="M14 2v6h6"/></svg></span> Review Pending Documents</button>
+          <button class="qa-btn" onclick="goPageByName('payments')"><span class="qa-icn"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg></span> View Overdue Payments</button>
+        </div>
         <div class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-top"><div class="kpi-icn" style="background:var(--info-bg);"><svg class="icon" viewBox="0 0 24 24" style="stroke:var(--info);"><path d="M4 21c0-4 3-6 8-6s8 2 8 6"/><circle cx="12" cy="7" r="4"/></svg></div><span class="kpi-trend" style="background:var(--success-bg); color:var(--success);">+8 today</span></div>
@@ -749,13 +809,38 @@ tr:last-child td{border-bottom:none;}
             </ul>
           </div>
         </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-head"><h3>Today's Queue Snapshot</h3><button class="row-btn" onclick="goPageByName('queue')">Open Queue</button></div>
+            <div class="mini-stat-row">
+              <div class="mini-stat"><b>7</b><span>Waiting</span></div>
+              <div class="mini-stat"><b>1</b><span>In Progress</span></div>
+              <div class="mini-stat"><b>13</b><span>Done Today</span></div>
+            </div>
+            <ul class="due-list">
+              <li><span>A-014 · Sample Applicant 4</span><span class="status-pill pill-progress">In Progress</span></li>
+              <li><span>A-015 · Sample Applicant 5</span><span class="status-pill pill-waiting">Waiting</span></li>
+              <li><span>A-016 · Sample Applicant 6</span><span class="status-pill pill-waiting">Waiting</span></li>
+            </ul>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Payments Due This Week</h3><button class="row-btn" onclick="goPageByName('payments')">Open Payments</button></div>
+            <ul class="due-list">
+              <li><div>Sample Student 4<div class="when">Overdue since Jul 25, 2026</div></div><span class="amt">₱16,200</span></li>
+              <li><div>Sample Student 2<div class="when">Due Aug 5, 2026</div></div><span class="amt">₱9,000</span></li>
+              <li><div>Sample Student 7<div class="when">Due Aug 3, 2026</div></div><span class="amt">₱11,500</span></li>
+              <li><div>Sample Student 5<div class="when">Due Aug 10, 2026</div></div><span class="amt">₱13,800</span></li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <!-- QUEUE -->
       <div class="page" id="page-queue">
         <div class="now-serving">
           <div>
-            <div class="label">Now Serving</div>
+            <div class="label"><span class="live-dot"></span> Now Serving</div>
             <div class="ticket" id="now-serving-ticket">A-014</div>
             <div class="sub" id="now-serving-name">Sample Applicant 4 — Caregiving NC II</div>
           </div>
@@ -763,6 +848,20 @@ tr:last-child td{border-bottom:none;}
             <svg class="icon" viewBox="0 0 24 24" style="stroke:#3d2c07;"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             Call Next
           </button>
+          <div class="queue-ticker">
+            <div class="ticker-track">
+              <span class="mono">A-015 · waiting · Sample Applicant 5</span>
+              <span class="mono">A-016 · waiting · Sample Applicant 6</span>
+              <span class="mono">A-017 · waiting · Sample Applicant 7</span>
+              <span class="mono">A-018 · waiting · Sample Applicant 8</span>
+              <span class="mono">A-019 · waiting · Sample Applicant 9</span>
+              <span class="mono">A-015 · waiting · Sample Applicant 5</span>
+              <span class="mono">A-016 · waiting · Sample Applicant 6</span>
+              <span class="mono">A-017 · waiting · Sample Applicant 7</span>
+              <span class="mono">A-018 · waiting · Sample Applicant 8</span>
+              <span class="mono">A-019 · waiting · Sample Applicant 9</span>
+            </div>
+          </div>
         </div>
         <div class="panel">
           <div class="panel-head"><h3>Today's Queue</h3></div>
@@ -775,13 +874,13 @@ tr:last-child td{border-bottom:none;}
           <table id="queue-table">
             <thead><tr><th>Ticket</th><th>Status</th><th>Applicant</th><th>Program</th><th>Time In</th><th></th></tr></thead>
             <tbody>
-              <tr><td><b>A-013</b></td><td><span class="status-pill pill-done">Done</span></td><td>Sample Applicant 3</td><td>Culinary Arts NC II</td><td>9:12 AM</td><td><button class="row-btn">View</button></td></tr>
-              <tr><td><b>A-014</b></td><td><span class="status-pill pill-progress">In Progress</span></td><td>Sample Applicant 4</td><td>Caregiving NC II</td><td>9:20 AM</td><td><button class="row-btn">View</button></td></tr>
-              <tr><td><b>A-015</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 5</td><td>BS Office Administration</td><td>9:24 AM</td><td><button class="row-btn">View</button></td></tr>
-              <tr><td><b>A-016</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 6</td><td>Cosmetology NC II</td><td>9:29 AM</td><td><button class="row-btn">View</button></td></tr>
-              <tr><td><b>A-017</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 7</td><td>BS Computer Technology</td><td>9:33 AM</td><td><button class="row-btn">View</button></td></tr>
-              <tr><td><b>A-018</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 8</td><td>Automotive Servicing NC II</td><td>9:40 AM</td><td><button class="row-btn">View</button></td></tr>
-              <tr><td><b>A-019</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 9</td><td>Caregiving NC II</td><td>9:47 AM</td><td><button class="row-btn">View</button></td></tr>
+              <tr><td class="mono"><b>A-013</b></td><td><span class="status-pill pill-done">Done</span></td><td>Sample Applicant 3</td><td>Culinary Arts NC II</td><td>9:12 AM</td><td><button class="row-btn">View</button></td></tr>
+              <tr><td class="mono"><b>A-014</b></td><td><span class="status-pill pill-progress">In Progress</span></td><td>Sample Applicant 4</td><td>Caregiving NC II</td><td>9:20 AM</td><td><button class="row-btn">View</button></td></tr>
+              <tr><td class="mono"><b>A-015</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 5</td><td>BS Office Administration</td><td>9:24 AM</td><td><button class="row-btn">View</button></td></tr>
+              <tr><td class="mono"><b>A-016</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 6</td><td>Cosmetology NC II</td><td>9:29 AM</td><td><button class="row-btn">View</button></td></tr>
+              <tr><td class="mono"><b>A-017</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 7</td><td>BS Computer Technology</td><td>9:33 AM</td><td><button class="row-btn">View</button></td></tr>
+              <tr><td class="mono"><b>A-018</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 8</td><td>Automotive Servicing NC II</td><td>9:40 AM</td><td><button class="row-btn">View</button></td></tr>
+              <tr><td class="mono"><b>A-019</b></td><td><span class="status-pill pill-waiting">Waiting</span></td><td>Sample Applicant 9</td><td>Caregiving NC II</td><td>9:47 AM</td><td><button class="row-btn">View</button></td></tr>
             </tbody>
           </table>
         </div>
@@ -800,14 +899,14 @@ tr:last-child td{border-bottom:none;}
           <table id="students-table">
             <thead><tr><th>Student ID</th><th>Name</th><th>Program</th><th>Status</th><th></th></tr></thead>
             <tbody>
-              <tr><td>SI-2026-101</td><td>Sample Student 1</td><td>Caregiving NC II</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 1','Caregiving NC II','Enrolled','SI-2026-101')">View</button></td></tr>
-              <tr><td>SI-2026-102</td><td>Sample Student 2</td><td>Culinary Arts NC II</td><td><span class="status-pill pill-waiting">Pending</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 2','Culinary Arts NC II','Pending','SI-2026-102')">View</button></td></tr>
-              <tr><td>SI-2026-103</td><td>Sample Student 3</td><td>BS Office Administration</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 3','BS Office Administration','Enrolled','SI-2026-103')">View</button></td></tr>
-              <tr><td>SI-2026-104</td><td>Sample Student 4</td><td>Cosmetology NC II</td><td><span class="status-pill pill-progress">Reserved</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 4','Cosmetology NC II','Reserved','SI-2026-104')">View</button></td></tr>
-              <tr><td>SI-2026-105</td><td>Sample Student 5</td><td>Automotive Servicing NC II</td><td><span class="status-pill pill-waiting">Pending</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 5','Automotive Servicing NC II','Pending','SI-2026-105')">View</button></td></tr>
-              <tr><td>SI-2026-106</td><td>Sample Student 6</td><td>BS Computer Technology</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 6','BS Computer Technology','Enrolled','SI-2026-106')">View</button></td></tr>
-              <tr><td>SI-2026-107</td><td>Sample Student 7</td><td>Caregiving NC II</td><td><span class="status-pill pill-progress">Reserved</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 7','Caregiving NC II','Reserved','SI-2026-107')">View</button></td></tr>
-              <tr><td>SI-2026-108</td><td>Sample Student 8</td><td>Culinary Arts NC II</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 8','Culinary Arts NC II','Enrolled','SI-2026-108')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-101</td><td>Sample Student 1</td><td>Caregiving NC II</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 1','Caregiving NC II','Enrolled','SI-2026-101')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-102</td><td>Sample Student 2</td><td>Culinary Arts NC II</td><td><span class="status-pill pill-waiting">Pending</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 2','Culinary Arts NC II','Pending','SI-2026-102')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-103</td><td>Sample Student 3</td><td>BS Office Administration</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 3','BS Office Administration','Enrolled','SI-2026-103')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-104</td><td>Sample Student 4</td><td>Cosmetology NC II</td><td><span class="status-pill pill-progress">Reserved</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 4','Cosmetology NC II','Reserved','SI-2026-104')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-105</td><td>Sample Student 5</td><td>Automotive Servicing NC II</td><td><span class="status-pill pill-waiting">Pending</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 5','Automotive Servicing NC II','Pending','SI-2026-105')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-106</td><td>Sample Student 6</td><td>BS Computer Technology</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 6','BS Computer Technology','Enrolled','SI-2026-106')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-107</td><td>Sample Student 7</td><td>Caregiving NC II</td><td><span class="status-pill pill-progress">Reserved</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 7','Caregiving NC II','Reserved','SI-2026-107')">View</button></td></tr>
+              <tr><td class="mono">SI-2026-108</td><td>Sample Student 8</td><td>Culinary Arts NC II</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 8','Culinary Arts NC II','Enrolled','SI-2026-108')">View</button></td></tr>
             </tbody>
           </table>
         </div>
@@ -815,6 +914,12 @@ tr:last-child td{border-bottom:none;}
 
       <!-- DOCUMENTS -->
       <div class="page" id="page-documents">
+        <div class="progress-grid">
+          <div class="progress-card"><div class="pc-top"><span>Sample Student 2</span><span class="pc-pct">33%</span></div><div class="progress-bar"><div class="progress-fill" style="width:33%;"></div></div></div>
+          <div class="progress-card"><div class="pc-top"><span>Sample Student 4</span><span class="pc-pct">50%</span></div><div class="progress-bar"><div class="progress-fill" style="width:50%;"></div></div></div>
+          <div class="progress-card"><div class="pc-top"><span>Sample Student 5</span><span class="pc-pct">50%</span></div><div class="progress-bar"><div class="progress-fill" style="width:50%;"></div></div></div>
+          <div class="progress-card"><div class="pc-top"><span>Sample Student 7</span><span class="pc-pct">100%</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div></div>
+        </div>
         <div class="panel">
           <div class="panel-head"><h3>Document Checklist</h3></div>
           <div class="filter-row">
@@ -841,6 +946,11 @@ tr:last-child td{border-bottom:none;}
 
       <!-- PAYMENTS -->
       <div class="page" id="page-payments">
+        <div class="snapshot-strip">
+          <div class="snap-card"><div class="snap-dot" style="background:var(--success);"></div><div><b>2</b><span>Fully Paid</span></div></div>
+          <div class="snap-card"><div class="snap-dot" style="background:var(--warning);"></div><div><b>3</b><span>Partial / Installment</span></div></div>
+          <div class="snap-card"><div class="snap-dot" style="background:var(--danger);"></div><div><b>1</b><span>Overdue</span></div></div>
+        </div>
         <div class="panel">
           <div class="panel-head"><h3>Fee &amp; Payment Tracking</h3></div>
           <div class="filter-row">
@@ -858,6 +968,22 @@ tr:last-child td{border-bottom:none;}
               <tr><td>Sample Student 5</td><td>Automotive Servicing NC II</td><td>₱19,800</td><td>₱13,800</td><td>Aug 10, 2026</td><td><span class="status-pill pill-partial">Partial</span></td><td><button class="row-btn" onclick="openLedgerModal('Sample Student 5','Automotive Servicing NC II','19,800','13,800','Aug 10, 2026')">View Ledger</button></td></tr>
               <tr><td>Sample Student 6</td><td>BS Computer Technology</td><td>₱22,000</td><td>₱0</td><td>—</td><td><span class="status-pill pill-paid">Paid</span></td><td><button class="row-btn" onclick="openLedgerModal('Sample Student 6','BS Computer Technology','22,000','0','Fully settled')">View Ledger</button></td></tr>
               <tr><td>Sample Student 7</td><td>Caregiving NC II</td><td>₱18,500</td><td>₱11,500</td><td>Aug 3, 2026</td><td><span class="status-pill pill-partial">Partial</span></td><td><button class="row-btn" onclick="openLedgerModal('Sample Student 7','Caregiving NC II','18,500','11,500','Aug 3, 2026')">View Ledger</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="page" id="page-users">
+        <div class="panel">
+          <div class="panel-head"><h3>Registrar Office Staff</h3><button class="row-btn primary" onclick="toastMsg('Invite sent')">+ Invite User</button></div>
+          <table id="users-table">
+            <thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>Admin User</td><td>Head Registrar</td><td class="mono" style="font-size:12px;">admin@sampleinstitute.edu.ph</td><td><span class="status-pill pill-done">Active</span></td><td><button class="row-btn" onclick="toastMsg('Role updated')">Edit</button></td></tr>
+              <tr><td>Sample Staff 1</td><td>Registrar Assistant</td><td class="mono" style="font-size:12px;">staff1@sampleinstitute.edu.ph</td><td><span class="status-pill pill-done">Active</span></td><td><button class="row-btn" onclick="toastMsg('Role updated')">Edit</button></td></tr>
+              <tr><td>Sample Staff 2</td><td>Cashier</td><td class="mono" style="font-size:12px;">staff2@sampleinstitute.edu.ph</td><td><span class="status-pill pill-done">Active</span></td><td><button class="row-btn" onclick="toastMsg('Role updated')">Edit</button></td></tr>
+              <tr><td>Sample Staff 3</td><td>Documents Officer</td><td class="mono" style="font-size:12px;">staff3@sampleinstitute.edu.ph</td><td><span class="status-pill pill-progress">Invited</span></td><td><button class="row-btn" onclick="toastMsg('Invite resent')">Resend</button></td></tr>
             </tbody>
           </table>
         </div>
@@ -1042,6 +1168,7 @@ const pageTitles = {
   students: 'Student Records',
   documents: 'Document Checklist',
   payments: 'Payments',
+  users: 'Users',
   settings: 'Settings'
 };
 function goPage(page, el){
@@ -1054,11 +1181,38 @@ function goPage(page, el){
   document.querySelector('.admin-body').scrollTop = 0;
   window.scrollTo(0,0);
 }
+function goPageByName(page){
+  const el = document.querySelector('.side-link[data-page="' + page + '"]');
+  if(el) goPage(page, el);
+}
 
 /* ---------- Admin: mobile sidebar ---------- */
 function toggleSidebar(open){
   document.getElementById('sidebar').classList.toggle('show', open);
   document.getElementById('sidebar-backdrop').classList.toggle('show', open);
+}
+
+/* ---------- Admin: notifications ---------- */
+function toggleNotif(){
+  document.getElementById('notif-dropdown').classList.toggle('show');
+  document.getElementById('notif-dot').style.display = 'none';
+}
+document.addEventListener('click', function(e){
+  const wrap = document.querySelector('.notif-wrap');
+  if(wrap && !wrap.contains(e.target)){
+    document.getElementById('notif-dropdown').classList.remove('show');
+  }
+});
+
+/* ---------- Admin: live search across the active page's table ---------- */
+function liveSearch(query){
+  const q = query.trim().toLowerCase();
+  const activePage = document.querySelector('.page.active');
+  if(!activePage) return;
+  const rows = activePage.querySelectorAll('table tbody tr');
+  rows.forEach(r => {
+    r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
 }
 
 /* ---------- Admin: filters ---------- */
