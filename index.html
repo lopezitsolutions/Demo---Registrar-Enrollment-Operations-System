@@ -292,6 +292,10 @@ footer.pub-footer{background:#241017; color:#D9C3CC; padding:44px 28px 26px;}
 
 table{width:100%; border-collapse:collapse; font-size:13.5px;}
 th{text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); padding:10px 12px; border-bottom:2px solid var(--border);}
+th.sortable{cursor:pointer; user-select:none;}
+th.sortable:hover{color:var(--primary);}
+th.sortable .sort-ind{font-size:10px; opacity:.5; margin-left:3px;}
+th.sortable.sort-asc .sort-ind, th.sortable.sort-desc .sort-ind{opacity:1; color:var(--primary);}
 td{padding:13px 12px; border-bottom:1px solid var(--border); vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 .status-pill{font-size:11px; font-weight:700; padding:4px 11px; border-radius:20px; display:inline-block;}
@@ -889,7 +893,7 @@ tr:last-child td{border-bottom:none;}
       <!-- STUDENTS -->
       <div class="page" id="page-students">
         <div class="panel">
-          <div class="panel-head"><h3>All Student Records</h3></div>
+          <div class="panel-head"><h3>All Student Records</h3><button class="row-btn primary" onclick="goPageByName('students-new')">+ Add Enrollee</button></div>
           <div class="filter-row">
             <button class="filter-btn active" onclick="filterTable(this,'students-table',0)">All</button>
             <button class="filter-btn" onclick="filterTable(this,'students-table',3,'Enrolled')">Enrolled</button>
@@ -897,7 +901,7 @@ tr:last-child td{border-bottom:none;}
             <button class="filter-btn" onclick="filterTable(this,'students-table',3,'Reserved')">Reserved</button>
           </div>
           <table id="students-table">
-            <thead><tr><th>Student ID</th><th>Name</th><th>Program</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th class="sortable" onclick="sortTable('students-table',0,this)">Student ID <span class="sort-ind">↕</span></th><th class="sortable" onclick="sortTable('students-table',1,this)">Name <span class="sort-ind">↕</span></th><th class="sortable" onclick="sortTable('students-table',2,this)">Program <span class="sort-ind">↕</span></th><th>Status</th><th></th></tr></thead>
             <tbody>
               <tr><td class="mono">SI-2026-101</td><td>Sample Student 1</td><td>Caregiving NC II</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 1','Caregiving NC II','Enrolled','SI-2026-101')">View</button></td></tr>
               <tr><td class="mono">SI-2026-102</td><td>Sample Student 2</td><td>Culinary Arts NC II</td><td><span class="status-pill pill-waiting">Pending</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 2','Culinary Arts NC II','Pending','SI-2026-102')">View</button></td></tr>
@@ -909,6 +913,46 @@ tr:last-child td{border-bottom:none;}
               <tr><td class="mono">SI-2026-108</td><td>Sample Student 8</td><td>Culinary Arts NC II</td><td><span class="status-pill pill-done">Enrolled</span></td><td><button class="row-btn" onclick="openStudentModal('Sample Student 8','Culinary Arts NC II','Enrolled','SI-2026-108')">View</button></td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- NEW ENROLLEE -->
+      <div class="page" id="page-students-new">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>New Enrollee</h3>
+            <button class="row-btn" onclick="goPageByName('students')">← Back to List</button>
+          </div>
+          <form onsubmit="submitNewEnrollee(event)">
+            <div class="settings-grid">
+              <div class="field"><label>First Name</label><input type="text" placeholder="First name" required></div>
+              <div class="field"><label>Last Name</label><input type="text" placeholder="Last name" required></div>
+              <div class="field"><label>Contact Number</label><input type="text" placeholder="+63 900 000 0003" required></div>
+              <div class="field"><label>Email Address</label><input type="email" placeholder="student@email.com"></div>
+              <div class="field">
+                <label>Program</label>
+                <select required>
+                  <option value="">Select a program</option>
+                  <option>Caregiving NC II</option>
+                  <option>Culinary Arts NC II</option>
+                  <option>BS Office Administration</option>
+                  <option>Cosmetology NC II</option>
+                  <option>Automotive Servicing NC II</option>
+                  <option>BS Computer Technology</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Enrollment Status</label>
+                <select>
+                  <option>Pending</option>
+                  <option>Reserved</option>
+                  <option>Enrolled</option>
+                </select>
+              </div>
+              <div class="field full"><label>Notes (optional)</label><textarea rows="3" placeholder="Anything the registrar should know"></textarea></div>
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top:18px;">Save Enrollee</button>
+          </form>
         </div>
       </div>
 
@@ -1166,6 +1210,7 @@ const pageTitles = {
   dashboard: 'Dashboard',
   queue: 'Enrollment Queue',
   students: 'Student Records',
+  'students-new': 'New Enrollee',
   documents: 'Document Checklist',
   payments: 'Payments',
   users: 'Users',
@@ -1175,7 +1220,7 @@ function goPage(page, el){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
   document.querySelectorAll('.side-link').forEach(l => l.classList.remove('active'));
-  el.classList.add('active');
+  if(el) el.classList.add('active');
   document.getElementById('page-title').textContent = pageTitles[page];
   toggleSidebar(false);
   document.querySelector('.admin-body').scrollTop = 0;
@@ -1183,7 +1228,27 @@ function goPage(page, el){
 }
 function goPageByName(page){
   const el = document.querySelector('.side-link[data-page="' + page + '"]');
-  if(el) goPage(page, el);
+  goPage(page, el);
+}
+function submitNewEnrollee(e){
+  e.preventDefault();
+  toastMsg('New enrollee saved to Student Records');
+  e.target.reset();
+  goPageByName('students');
+}
+function sortTable(tableId, colIndex, th){
+  const table = document.getElementById(tableId);
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const asc = !th.classList.contains('sort-asc');
+  rows.sort((a, b) => {
+    const av = a.children[colIndex].textContent.trim().toLowerCase();
+    const bv = b.children[colIndex].textContent.trim().toLowerCase();
+    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+  table.querySelectorAll('th.sortable').forEach(h => h.classList.remove('sort-asc','sort-desc'));
+  th.classList.add(asc ? 'sort-asc' : 'sort-desc');
+  rows.forEach(r => tbody.appendChild(r));
 }
 
 /* ---------- Admin: mobile sidebar ---------- */
